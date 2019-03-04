@@ -1,0 +1,4 @@
+cached
+vendor
+composer.lock
+posts/*.md
