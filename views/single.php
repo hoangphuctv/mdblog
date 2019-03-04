@@ -7,11 +7,13 @@
 			<div class="markdown-body">
 				<?php if (isset($post)) { echo $post; } ?>
 			</div>
+			<?php include __DIR__ . '/parts/fb-comments.php'; ?>	
 		</div>
-<hr>
+		<hr>
 		<div class="container">
 			<?php $sub_title = 'Các bài viết khác'; ?>
 			<?php include __DIR__ . '/parts/list.php'; ?>
+			<?php include __DIR__ . '/parts/footer.php'; ?>	
 		</div>
 
 		<?php include __DIR__ . '/parts/foot.php'; ?>		

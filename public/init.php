@@ -5,10 +5,9 @@ if (!defined("ROOT")) { die('File not found'); }
 $post = POST;
 $cache = CACHE;
 $all_cache = "$cache/all";
-if (!file_exists($all_cache)) {
-	echo `cd $post && find . -type f > $all_cache 2>&1`;
-}
-
+// if (!file_exists($all_cache)) {
+	echo `cd $post && find . -type f | sort | tac > $all_cache 2>&1`;
+// }
 
 function find_posts($offset, $limit){
 	$head = $offset + $limit;

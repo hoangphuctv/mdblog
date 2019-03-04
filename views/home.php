@@ -11,7 +11,7 @@
 			<?php if ($page < $total_page) { ?>
 				<a class="btn btn-primary" href="?page=<?= $page + 1 ?>">  Next page &gt;</a>
 			<?php } ?>
-
+			<?php include __DIR__ . '/parts/footer.php'; ?>	
 		</div>
 
 	<?php include __DIR__ . '/parts/foot.php'; ?>		
