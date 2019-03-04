@@ -5,9 +5,8 @@ if (!defined("ROOT")) { die('File not found'); }
 $post = POST;
 $cache = CACHE;
 $all_cache = "$cache/all";
-
-if (!is_file($all_cache)) {
-	`cd $post && find . -type f > $all_cache`;
+if (!file_exists($all_cache)) {
+	echo `cd $post && find . -type f > $all_cache 2>&1`;
 }
 
 
@@ -22,6 +21,8 @@ function find_posts($offset, $limit){
 	$total = intval(`wc -l $all_cache`);
 	return [$posts, $total];
 }
+
+
 
 function parse_post($post_path){
 
@@ -55,7 +56,12 @@ function get_post_title($post_path) {
 function get_next_posts($current_post, $n=1) {
 	$all = CACHE ."/all";
 	$posts = `awk '$0 == ".$current_post" {i=1;next};i && i++ <= $n' $all`;
-	return explode("\n", trim($posts));
+	$posts = trim($posts);
+	if (empty($posts)) {
+		$posts = `tail -n $n $all`;
+		$posts = trim($posts);
+	}
+	return explode("\n", $posts);
 }
 
 function short_date($time) {
@@ -72,3 +78,22 @@ function full_date($time) {
 	$date = str_replace($today, '', date ($format, $time));
 	return $date;
 } 
+
+
+function current_url() {
+    $protocol = 'http';
+    if ($_SERVER['SERVER_PORT'] == 443 || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')) {
+        $protocol .= 's';
+        $protocol_port = $_SERVER['SERVER_PORT'];
+    } else {
+        $protocol_port = 80;
+    }
+
+    $host = $_SERVER['HTTP_HOST'];
+    $port = $_SERVER['SERVER_PORT'];
+    $request = $_SERVER['REQUEST_URI'];
+    $query = isset($_SERVER['argv']) ? substr($_SERVER['argv'][0], strpos($_SERVER['argv'][0], ';') + 1) : '';
+
+    $toret = $protocol . '://' . $host . $request . (empty($query) ? '' : '?' . $query);
+    return $toret;
+}

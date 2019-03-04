@@ -1,11 +1,9 @@
 <?php
-opcache_reset();
-
 define('ROOT', realpath(__DIR__ . '/../'));
-define('POST', realpath(ROOT . '/posts'));
-define('VIEW', realpath(ROOT . '/views'));
-define('CTRL', realpath(ROOT . '/controllers'));
-define('CACHE', realpath(ROOT . '/cached'));
+define('POST',  ROOT . '/posts');
+define('VIEW',  ROOT . '/views');
+define('CTRL',  ROOT . '/controllers');
+define('CACHE', ROOT . '/cached');
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
