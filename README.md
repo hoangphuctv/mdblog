@@ -2,6 +2,7 @@
 
 Install dependencies
 ```
+$ git clone git@github.com:hoangphuctv/mdblog.git
 $ cd phpmdb
 $ composer install
 ```
