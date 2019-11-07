@@ -2,3 +2,4 @@ cached
 vendor
 composer.lock
 posts/*
+config.json
