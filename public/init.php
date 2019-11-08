@@ -5,9 +5,13 @@ if (!defined("ROOT")) { die('File not found'); }
 $post = POST;
 $cache = CACHE;
 $all_cache = "$cache/all";
-// if (!file_exists($all_cache)) {
-	echo `cd $post && find . -type f | sort | tac > $all_cache 2>&1`;
-// }
+if (!file_exists($all_cache) || $config->debug) {
+	$all_data = `cd $post && find . -type f | sort`;
+	$all_data = explode("\n", $all_data);
+	$all_data = array_reverse($all_data);
+	$all_data = implode("\n", $all_data);
+	file_put_contents($all_cache, $all_data); 
+}
 
 function find_posts($offset, $limit){
 	$head = $offset + $limit;
@@ -42,12 +46,22 @@ function parse_post($post_path){
 
 function get_post_title($post_path) {
 	$file = POST.$post_path;
-	$t = `head $file -n 1`;
-	$t = trim($t);
-	if (empty($t)) {
-		$t = str_replace(".md", ".html", $post_path);
-	}else{
-		$t = preg_replace("/\#\s*/", '', $t);
+	$content = file_get_contents($file);
+	$lines = explode("\n", $content);
+
+	if ($lines[0] == '---') {
+		$parts = explode("---", $content);
+		$metadata = parse_toml($parts[1]);
+		if (isset($metadata['title'])) {
+			return $metadata['title'];
+		}
+		$t = $content[0];
+		$t = trim($t);
+		if (empty($t)) {
+			$t = str_replace(".md", ".html", $post_path);
+		}else{
+			$t = preg_replace("/\#\s*/", '', $t);
+		}
 	}
 	return $t;
 }
@@ -77,7 +91,6 @@ function full_date($time) {
 	$date = str_replace($today, '', date ($format, $time));
 	return $date;
 } 
-
 
 function current_url() {
     $protocol = 'http';
