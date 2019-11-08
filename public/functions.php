@@ -1,5 +1,130 @@
 <?php
 
+
+
+function find_posts($offset, $limit){
+	$head = $offset + $limit;
+
+	$all_cache = CACHE."/all";
+	
+	$posts = `head -n $head $all_cache | tail -n $limit`;
+	$posts = explode("\n", trim($posts));
+
+	$total = intval(`wc -l $all_cache`);
+	return [$posts, $total];
+}
+
+
+function parse_post($post_path){
+
+	$post_path = str_replace("./", '/', $post_path);
+	$post = [
+		'name'     => basename($post_path),
+		'path'     => $post_path,
+		'fullpath' => POST . '/' . $post_path,
+	];
+
+	$metadata = get_post_metadata($post_path);
+	if ($metadata) {
+		$post = array_merge($post, $metadata);
+	}
+
+	if (isset($post['date'])) {
+		$post['mod_date'] = short_date($post['date']);
+		$post['create_date'] = short_date($post['date']);
+	}else {
+		$post['mod_date'] = '';
+		$post['create_date'] = '';
+	}
+	
+	return $post;
+}
+
+function get_post_metadata($post_path) {
+	if (strpos($post_path, POST) === false) {
+		$file = POST.$post_path;
+	}else {
+		$file = $post_path;
+	}
+	$content = file_get_contents($file);
+	$lines = explode("\n", $content);
+	if ($lines[0] == '---') {
+		$parts = explode("---", $content);
+		$metadata = parse_toml($parts[1]);
+		$metadata['content'] = $parts[2];
+		if (isset($metadata['title'])) {
+			$t = $metadata['title'];
+		}
+	}else {
+		// get first line as title
+		$metadata = [
+			'title' => array_shift($content),
+			'content' => implode("\n", $content),
+		];
+	}
+	$metadata['title'] = trim($metadata['title'], "'\" \t\r\n");
+	if (empty($metadata['title'])) {
+		$metadata['title'] = preg_replace("/\.md/", ".html", $post_path);
+	}else{
+		$metadata['title'] = preg_replace("/\#\s*/", '', $metadata['title']);
+	}
+
+	return $metadata;
+}
+
+function get_next_posts($current_post, $n=1) {
+	$all = CACHE ."/all";
+	$posts = `awk '$0 == ".$current_post" {i=1;next};i && i++ <= $n' $all`;
+	$posts = trim($posts);
+	if (empty($posts)) {
+		$posts = `tail -n $n $all`;
+		$posts = trim($posts);
+	}
+	return explode("\n", $posts);
+}
+
+function short_date($time) {
+	global $config;
+
+	if (!is_numeric($time)) {
+		$time = strtotime($time);
+	}
+
+	$format = isset($config->short_date) ? $config->short_date : "Y-m-d";
+	return date ($format, $time);
+} 
+
+function full_date($time) {
+	global $config;
+
+	if (!is_numeric($time)) {
+		$time = strtotime($time);
+	}
+	$format = isset($config->full_date) ? $config->full_date : "Y-m-d H:i:s";
+
+	$today = date("Y-m-d");
+	$date = str_replace($today, '', date ($format, $time));
+	return $date;
+} 
+
+function current_url() {
+    $protocol = 'http';
+    if ($_SERVER['SERVER_PORT'] == 443 || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')) {
+        $protocol .= 's';
+        $protocol_port = $_SERVER['SERVER_PORT'];
+    } else {
+        $protocol_port = 80;
+    }
+
+    $host = $_SERVER['HTTP_HOST'];
+    $port = $_SERVER['SERVER_PORT'];
+    $request = $_SERVER['REQUEST_URI'];
+    $query = isset($_SERVER['argv']) ? substr($_SERVER['argv'][0], strpos($_SERVER['argv'][0], ';') + 1) : '';
+
+    $toret = $protocol . '://' . $host . $request . (empty($query) ? '' : '?' . $query);
+    return $toret;
+}
+
 function file_get_lines($filepath, $n=1) {
 	$result = ""; 
 	$fn = fopen($filepath,"r");
