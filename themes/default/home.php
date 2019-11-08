@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 	<?php include __DIR__ . '/parts/head.php'; ?>
 	<body>
