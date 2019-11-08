@@ -1,5 +1,11 @@
 {
-	"site_name" : "Blog học mỗi ngày",
+	"site_name" : "Lập trình",
 	"author" : "Phuc Tran Hoang",
-	"post_per_page" : 5
+	"post_per_page" : 5,
+	"post_dir" : "/Users/phuctran/Blogs/hoangphuctv/content/post",
+	"permalink" : "/blog/{YEAR}/{MONTH}/{DAY}/{SLUG}/",
+
+	"ga_id" : "",
+	"fb_app_id" : "",
+	"debug" : true
 }
