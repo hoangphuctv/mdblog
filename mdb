@@ -1,0 +1,69 @@
+#!/usr/bin/env php
+<?php
+
+define('HOST'   , "localhost");
+define('PORT'   , "1919");
+define('APPNAME', "mdb");
+define('VERSION', "0.0.1");
+
+if (empty($argv)) {
+	mdb_print_usage();
+}
+
+$CMD = isset($argv[1]) ? $argv[1] : '';
+
+switch ($CMD) {
+	case 'version':
+		println(APPNAME, VERSION);
+		break;
+	case 'help':
+		mdb_print_usage();
+		break;
+	case 'server':
+		$HOST = HOST;
+		$PORT = PORT;
+		$dir = getcwd();
+		println("Listening on http://$HOST:$PORT");
+		println("Document root is $dir. ^C to exit.");
+		// println("php -S $HOST:$PORT public/index.php"); exit;
+		$a = popen("php -S $HOST:$PORT public/index.php", 'r'); 
+		while($b = fgets($a, 2048)) { 
+			echo $b;
+		}
+		pclose($a); 
+		exit;
+		break;
+	
+	default:
+		println("Generate html...");
+		break;
+}
+
+function mdb_print_usage($code=0) {
+	$APPNAME = APPNAME;
+	echo <<<MDBDOC
+$APPNAME usage:
+	$APPNAME version : show versions
+	$APPNAME server  : start start local development server for testing (DO NOT use for production)
+
+MDBDOC;
+	exit($code);
+}
+
+function println() {
+	echo implode(PHP_EOL, func_get_args()), PHP_EOL;
+}
+
+function execute($cmd) {
+    $proc = proc_open($cmd, [['pipe','r'],['pipe','w'],['pipe','w']], $pipes);
+    while(($line = fgets($pipes[1])) !== false) {
+        fwrite(STDOUT,$line);
+    }
+    while(($line = fgets($pipes[2])) !== false) {
+        fwrite(STDERR,$line);
+    }
+    fclose($pipes[0]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    return proc_close($proc);
+}
