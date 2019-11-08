@@ -1,9 +1,9 @@
 <?php
 
-$content = file_get_contents($mdfile);
+$post = parse_post($mdfile);
 
 $parsedown = new Parsedown();
-$post = $parsedown->text($content);
+$post['content'] = $parsedown->text($post['content']);
 
 $posts = get_next_posts($md_origin, 2);
 
