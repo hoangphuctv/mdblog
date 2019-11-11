@@ -6,11 +6,10 @@
 		<strong class="d-block text-gray-dark">
 			<a href="<?= str_replace('.md', '.html', $p->path) ?>"><?= $p->title ?></a>
 		</strong>
-		Last mod: <?= $p->mod_date ?>
+		<br>
+		<small><?= $p->author ? $config->author : $config->author ?></small>
+		<small><?= $p->mod_date != '1970-01-01' ? $p->mod_date : '' ?></small>
 		</p>
 	</div>
 	<?php } ?>
-	<small class="d-block text-right mt-3">
-	<a href="/">All posts</a>
-	</small>
 </div>

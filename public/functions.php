@@ -27,14 +27,13 @@ function parse_post($post_path){
 	}
 
 	if (isset($post['date'])) {
-		$post['mod_date'] = short_date($post['date']);
-		$post['create_date'] = short_date($post['date']);
+		$post['date'] = $post['date'];
+		list($post['year'], $post['month'], $post['day']) = explode("-", date("Y-m-d", strtotime($post['date'])));
 	}else {
-		$post['mod_date'] = '';
-		$post['create_date'] = '';
+		$post['date'] = '';
 	}
-	
-	return $post;
+
+	return new Post($post);
 }
 
 function get_post_metadata($post_path) {
@@ -141,7 +140,7 @@ function parse_toml($lines) {
 		$header = [];
 		foreach($lines as $line) {
 			$line = explode(":", $line);
-			$line[0] = trim($line[0]);
+			$line[0] = trim(strtolower($line[0]));
 			$line[1] = trim($line[1]);
 
 			if (strpos($line[1], '[') !== false) {
@@ -151,4 +150,23 @@ function parse_toml($lines) {
 		}
 	}
 	return $header;
+}
+
+
+function get_permalink($post){
+	// var_dump($post);
+	global $config;
+	static $df_permalink = "/{YEAR}-{MONTH}-{DAY}-{TITLE}.html";
+	$permalink = $config->permalink;
+	if (!preg_match_all('/{(\w+)}/', $permalink, $vars)){
+		preg_match_all('/{(\w+)}/', $df_permalink, $vars);
+	}
+	$link = $permalink;
+	foreach ($vars[1] as $key) {
+		$property = strtolower($key);
+		$link = str_replace("{{$key}}", strtolower($post->$property), $link);
+	}
+	$link = preg_replace("/\s+/", '-', $link);
+	$link = rtrim($link, '/');
+	return $link;
 }

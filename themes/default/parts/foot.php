@@ -6,3 +6,7 @@
 		</div>
 	</div>
 </div>
+<style>
+	pre {border-left:1.8px solid #275a90;}
+	code {color:#275a90;}
+</style>

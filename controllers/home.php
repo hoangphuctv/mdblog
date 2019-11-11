@@ -8,9 +8,10 @@ list($posts, $total) = find_posts($offset, $limit);
 $total_page = $total/$limit;
 $ps = [];
 foreach($posts as $p) {
-	$ps[] = (object) parse_post($p);
+	$ps[] = new Post(parse_post($p));
 }
 $posts = $ps;
+$post = new Post();
 
 include VIEW."/home.php";
 

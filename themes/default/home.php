@@ -5,16 +5,19 @@
 		<?php include __DIR__ . '/parts/header.php'; ?>
 		<div class="container">
 			<?php include __DIR__ . '/parts/list.php'; ?>
-			
+
 			<?php if ($page > 1) { ?>
 				<a class="btn btn-primary" href="?page=<?= $page - 1 ?>"> &lt; Prev page</a>
 			<?php } ?>
-			<?php if ($page < $total_page) { ?>
+			<?php if ($page < $total_page) {
+				if ($page > 1) {
+					echo "|";
+				} ?>
 				<a class="btn btn-primary" href="?page=<?= $page + 1 ?>">  Next page &gt;</a>
 			<?php } ?>
-			<?php include __DIR__ . '/parts/footer.php'; ?>	
+			<?php include __DIR__ . '/parts/footer.php'; ?>
 		</div>
 
-	<?php include __DIR__ . '/parts/foot.php'; ?>		
+	<?php include __DIR__ . '/parts/foot.php'; ?>
 	</body>
 </html>
