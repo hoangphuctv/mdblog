@@ -26,7 +26,6 @@ class Sample {
 		if (is_array($this->$key) && !is_object($this->$key)) {
 			return new self($value);
 		}
-		
 		return $value;
 	}
 

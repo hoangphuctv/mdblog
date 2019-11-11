@@ -9,15 +9,15 @@
 				<h1 class="page-title"><?php echo $post['title'] ?></h1>
 				<?php if (isset($post)) { echo $post['content']; } ?>
 			</div>
-			<?php include __DIR__ . '/parts/fb-comments.php'; ?>	
+			<?php include __DIR__ . '/parts/fb-comments.php'; ?>
 		</div>
 		<hr>
 		<div class="container">
 			<?php $sub_title = 'Các bài viết khác'; ?>
 			<?php include __DIR__ . '/parts/list.php'; ?>
-			<?php include __DIR__ . '/parts/footer.php'; ?>	
+			<?php include __DIR__ . '/parts/footer.php'; ?>
 		</div>
 
-		<?php include __DIR__ . '/parts/foot.php'; ?>		
+		<?php include __DIR__ . '/parts/foot.php'; ?>
 	</body>
 </html>
