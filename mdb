@@ -12,6 +12,8 @@ if (empty($argv)) {
 
 $CMD = isset($argv[1]) ? $argv[1] : '';
 
+system_check();
+
 switch ($CMD) {
 	case 'version':
 		println(APPNAME, VERSION);
@@ -50,8 +52,15 @@ MDBDOC;
 	exit($code);
 }
 
+function system_check(){
+	println('Init file:', 'config.json');
+	if (!is_file('config.json')) {
+		copy('config.json.sample', 'config.json');
+	}
+}
+
 function println() {
-	echo implode(PHP_EOL, func_get_args()), PHP_EOL;
+	echo implode(" ", func_get_args()), PHP_EOL;
 }
 
 function execute($cmd) {
