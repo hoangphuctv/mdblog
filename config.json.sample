@@ -1,7 +1,7 @@
 {
 	"site_name" : "Lập trình",
 	"author" : "Phuc Tran Hoang",
-	"post_per_page" : 5,
+	"post_per_page" : 10,
 	"post_dir" : "/Users/phuctran/Blogs/hoangphuctv/content/post",
 	"permalink" : "/blog/{YEAR}/{MONTH}/{DAY}/{SLUG}/",
 
