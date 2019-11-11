@@ -1,19 +1,16 @@
 <?php
 
-
-
 function find_posts($offset, $limit){
 	$head = $offset + $limit;
 
 	$all_cache = CACHE."/all";
-	
+
 	$posts = `head -n $head $all_cache | tail -n $limit`;
 	$posts = explode("\n", trim($posts));
 
 	$total = intval(`wc -l $all_cache`);
 	return [$posts, $total];
 }
-
 
 function parse_post($post_path){
 
