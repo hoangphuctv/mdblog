@@ -1,8 +1,10 @@
 <?php
-define('ROOT', realpath(__DIR__ . '/../'));
-define('CTRL',  ROOT . '/controllers');
-define('CACHE', ROOT . '/cached');
-define('LIBRARIES', ROOT . '/libraries');
+define('ROOT',       realpath(__DIR__ . '/../'));
+define('CTRL',       ROOT . '/controllers');
+define('CACHE',      ROOT . '/cached');
+define('LIBRARIES',  ROOT . '/libraries');
+define('PUBLICPATH',     ROOT . '/public');
+define('STATICPATH',     ROOT . '/static');
 
 
 require_once LIBRARIES . '/sample.php';

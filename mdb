@@ -32,12 +32,12 @@ switch ($CMD) {
 		while($b = fgets($a, 2048)) { 
 			echo $b;
 		}
-		pclose($a); 
+		pclose($a);
 		exit;
 		break;
-	
 	default:
 		println("Generate html...");
+		include __DIR__ . '/public/generate.php';
 		break;
 }
 
