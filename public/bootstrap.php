@@ -36,6 +36,6 @@ if (isset($config->debug) && $config->debug) {
 define('VIEW',  ROOT . "/themes/{$config->theme}");
 
 
-include ROOT . '/vendor/autoload.php';
-include __DIR__.'/functions.php';
-include __DIR__.'/init.php';
+include_once ROOT . '/vendor/autoload.php';
+include_once __DIR__.'/functions.php';
+include_once __DIR__.'/init.php';
