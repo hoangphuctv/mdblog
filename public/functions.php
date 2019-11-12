@@ -86,9 +86,13 @@ function short_date($time) {
 		$time = strtotime($time);
 	}
 
+	if ($time <=0 ) {
+		return '';
+	}
+
 	$format = isset($config->short_date) ? $config->short_date : "Y-m-d";
-	return date ($format, $time);
-} 
+	return date($format, $time);
+}
 
 function full_date($time) {
 	global $config;
@@ -96,12 +100,16 @@ function full_date($time) {
 	if (!is_numeric($time)) {
 		$time = strtotime($time);
 	}
+
+	if ($time <=0 ) {
+		return '';
+	}
 	$format = isset($config->full_date) ? $config->full_date : "Y-m-d H:i:s";
 
 	$today = date("Y-m-d");
 	$date = str_replace($today, '', date ($format, $time));
 	return $date;
-} 
+}
 
 function current_url() {
     $protocol = 'http';
