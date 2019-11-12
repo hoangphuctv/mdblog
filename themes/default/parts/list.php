@@ -4,7 +4,7 @@
 	<div class="media text-muted pt-3">
 		<p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
 		<strong class="d-block text-gray-dark">
-			<a href="<?= str_replace('.md', '.html', $p->path) ?>"><?= $p->title ?></a>
+			<a href="<?= $p->link ?>"><?= $p->title ?></a>
 		</strong>
 		<br>
 		<small><?= $p->author ? $config->author : $config->author ?></small>
