@@ -33,16 +33,16 @@ function parse_post($post_path){
 		$post['date'] = '';
 	}
 
-	return new Post($post);
+	$post_obj = new Post($post);
+	$post_obj->link = get_permalink($post_obj);
+	return $post_obj;
 }
 
 function get_post_metadata($post_path) {
 	if (strpos($post_path, POST) === false) {
-		$file = POST.$post_path;
-	}else {
-		$file = $post_path;
+		$post_path = POST.$post_path;
 	}
-	$content = file_get_contents($file);
+	$content = file_get_contents($post_path);
 	$lines = explode("\n", $content);
 	if ($lines[0] == '---') {
 		$parts = explode("---", $content);
