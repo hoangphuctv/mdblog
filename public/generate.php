@@ -6,8 +6,6 @@ include_once __DIR__ . '/bootstrap.php';
 $_SERVER['HTTP_HOST'] = parse_url($config->base_url, PHP_URL_HOST);
 $_SERVER['SERVER_PORT'] = parse_url($config->base_url, PHP_URL_PORT);
 
-
-
 $all_cache = CACHE."/all";
 $lines = file_get_contents($all_cache);
 $lines = explode("\n", $lines);
@@ -22,6 +20,9 @@ foreach ($lines as $md_origin) {
 	$content = ob_get_contents();
 	ob_clean();
 	$htmlfile = $post->link;
+	if ($post->draft == 'true') {
+		continue;
+	}
 	if (!preg_match('/\/(.+)\.(\w+)$/', $htmlfile, $m)) {
 		$htmlfile .= 'index.html';
 	}
@@ -33,7 +34,7 @@ foreach ($lines as $md_origin) {
 	if (!is_dir($dirname)) {
 		mkdir($dirname, 0775, true);
 	}
-	println('Writing file', $fullpath);
+	println('Writing file', $htmlfile);
 	file_put_contents($dirname . '/' . $basename, $content);
 }
 println("Done");

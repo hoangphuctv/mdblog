@@ -173,6 +173,18 @@ function get_permalink($post){
 		$property = strtolower($key);
 		$link = str_replace("{{$key}}", strtolower($post->$property), $link);
 	}
+	// character not support function strtolower
+	$link = str_replace(['Đ'], 'đ', $link);
+
+	// $link = str_replace(['/'], '-', $link);
+	$link = str_replace([
+		'(', ')',
+		'[', ']',
+		'$', '|',
+		"'", '"',
+		".", ',',
+		"<", '>',
+		], '', $link);
 	$link = preg_replace("/\s+/", '-', $link);
 	$link = preg_replace("/\-+/", '-', $link);
 	return $link;

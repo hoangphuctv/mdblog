@@ -8,7 +8,8 @@ $all_cache = "$cache/all";
 if (!is_dir($cache)) {
 	mkdir($cache, 0755);
 }
-if (!file_exists($all_cache) || $config->debug) {
+if (!file_exists($all_cache) || $config->debug || PHP_SAPI === 'cli') {
+	// reset or create cache
 	$all_data = `cd $post && find . -type f | sort`;
 	$all_data = explode("\n", $all_data);
 	$all_data = array_reverse($all_data);

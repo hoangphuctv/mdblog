@@ -29,7 +29,7 @@ switch ($CMD) {
 		println("Document root is $dir. ^C to exit.");
 		// println("php -S $HOST:$PORT public/index.php"); exit;
 		$a = popen("php -S $HOST:$PORT public/index.php", 'r'); 
-		while($b = fgets($a, 2048)) { 
+		while($b = fgets($a, 2048)) {
 			echo $b;
 		}
 		pclose($a);
