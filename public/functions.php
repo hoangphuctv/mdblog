@@ -122,13 +122,13 @@ function current_url() {
 }
 
 function file_get_lines($filepath, $n=1) {
-	$result = ""; 
+	$result = "";
 	$fn = fopen($filepath,"r");
 
 	for ($i=0; $i<$n; $i++) {
 		$result .= fgets($fn);
 	}
-	
+
 	fclose($fn);
 	return $result;
 }
@@ -166,6 +166,6 @@ function get_permalink($post){
 		$link = str_replace("{{$key}}", strtolower($post->$property), $link);
 	}
 	$link = preg_replace("/\s+/", '-', $link);
-	$link = rtrim($link, '/');
+	$link = preg_replace("/\-+/", '-', $link);
 	return $link;
 }
