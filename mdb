@@ -53,9 +53,16 @@ MDBDOC;
 }
 
 function system_check(){
-	println('Init file:', 'config.json');
 	if (!is_file('config.json')) {
-		copy('config.json.sample', 'config.json');
+		if (is_file('config.json.sample')) {
+			println('Init file:', 'config.json');
+			copy('config.json.sample', 'config.json');
+		}
+		else {
+			$APPNAME = APPNAME;
+			println("You are running $APPNAME from outside $APPNAME project.");
+			exit(1);
+		}
 	}
 }
 
