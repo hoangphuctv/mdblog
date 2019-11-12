@@ -154,7 +154,6 @@ function parse_toml($lines) {
 
 
 function get_permalink($post){
-	// var_dump($post);
 	global $config;
 	static $df_permalink = "/{YEAR}-{MONTH}-{DAY}-{TITLE}.html";
 	$permalink = $config->permalink;
