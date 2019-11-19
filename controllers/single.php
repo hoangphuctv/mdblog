@@ -1,6 +1,6 @@
 <?php
 
-$post = parse_post($mdfile);
+// $post = parse_post($mdfile);
 
 $parsedown = new Parsedown();
 $post->content = $parsedown->text($post->content);

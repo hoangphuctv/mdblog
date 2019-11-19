@@ -5,6 +5,7 @@ if (!defined("ROOT")) { die('File not found'); }
 $post = POST;
 $cache = CACHE;
 $all_cache = "$cache/all";
+$all_cache_metadata = "$cache/all_metadata";
 if (!is_dir($cache)) {
 	mkdir($cache, 0755);
 }
@@ -13,6 +14,15 @@ if (!file_exists($all_cache) || $config->debug || PHP_SAPI === 'cli') {
 	$all_data = `cd $post && find . -type f | sort`;
 	$all_data = explode("\n", $all_data);
 	$all_data = array_reverse($all_data);
-	$all_data = implode("\n", $all_data);
-	file_put_contents($all_cache, $all_data); 
+	$all_data_str = implode("\n", $all_data);
+
+	file_put_contents($all_cache, $all_data_str);
+
+	// truncate and init file meta
+	file_put_contents($all_cache_metadata, '');
+
+	foreach($all_data as $line) {
+		$post_meta = parse_post($line);
+		file_put_contents($all_cache_metadata, json_encode($post_meta)."\n", FILE_APPEND);
+	}
 }

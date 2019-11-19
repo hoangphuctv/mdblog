@@ -1,5 +1,44 @@
 <?php
 
+function get_title_from_url($uri){
+	global $config;
+	$permalink = $config->permalink;
+	$uris = explode("/", $uri);
+	$uris = array_filter($uris);
+	$permalinks = explode("/", $permalink);
+	$permalinks = array_filter($permalinks);
+
+	if (count($uris) != count($permalinks)) {
+		show_404('Config url not match.');
+	}
+	$ret = array_combine($permalinks, $uris);
+	if (empty($ret['{TITLE}'])) {
+		show_404('Invalid config permalink.');
+	}
+
+	return urldecode($ret['{TITLE}']);
+}
+
+function show_404($msg=''){
+	echo $msg ?:"File not found.";
+	exit;
+}
+
+function find_post($link) {
+	$link = urldecode($link);
+	$all_cache_metadata = CACHE."/all_metadata";
+	$metadata = file_get_contents($all_cache_metadata);
+	$metadata = explode("\n", $metadata);
+	foreach ($metadata as $line) {
+		$post_meta = json_decode($line);
+		if (empty($post_meta->link)) {continue;}
+		if ($post_meta->link == $link) {
+			return $post_meta;
+		}
+	}
+	return null;
+}
+
 function find_posts($offset, $limit){
 	$head = $offset + $limit;
 
@@ -54,8 +93,8 @@ function get_post_metadata($post_path) {
 	}else {
 		// get first line as title
 		$metadata = [
-			'title' => array_shift($content),
-			'content' => implode("\n", $content),
+			'title' => array_shift($lines),
+			'content' => implode("\n", $lines),
 		];
 	}
 	$metadata['title'] = trim($metadata['title'], "'\" \t\r\n");

@@ -10,8 +10,9 @@ $mdfile = POST. '/'. $uri;
 if ($uri == "/") {
 	include CTRL . '/home.php';
 }else {
-	if (!is_file($mdfile)) {
-		echo 'file not found';exit;
+	$post = find_post($uri);
+	if (empty($post)) {
+		show_404();
 	}else {
 		include CTRL . '/single.php';
 	}
