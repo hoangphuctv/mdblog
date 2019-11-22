@@ -228,3 +228,10 @@ function get_permalink($post){
 	$link = preg_replace("/\-+/", '-', $link);
 	return $link;
 }
+
+function get_page_link($page) {
+	if ($page == 1) {
+		return BASE_URL;
+	}
+	return BASE_URL.'page-'.$page;
+}

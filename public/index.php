@@ -1,6 +1,8 @@
 <?php
 include __DIR__.'/bootstrap.php';
 
+define('BASE_URL', '/');
+
 $uri = str_replace('..', '', explode("?", $_SERVER['REQUEST_URI'])[0]);
 $uri = str_replace('.html', '.md', $uri);
 
