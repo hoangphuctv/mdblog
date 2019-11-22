@@ -11,8 +11,9 @@
 			</div>
 			<?php include __DIR__ . '/parts/fb-comments.php'; ?>
 		</div>
-		<br/><hr>
+		<br/>
 		<div class="container">
+			<hr>
 			<?php $sub_title = 'Các bài viết khác'; ?>
 			<?php include __DIR__ . '/parts/list.php'; ?>
 			<?php include __DIR__ . '/parts/footer.php'; ?>
