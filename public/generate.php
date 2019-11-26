@@ -16,6 +16,7 @@ foreach ($lines as $md_origin) {
 	$_SERVER['REQUEST_URI'] = $md_origin;
 	if (empty($md_origin)) { continue; }
 	$post = parse_post($md_origin);
+	if (empty($post)) { continue; }
 	$mdfile = POST. '/'. $md_origin;
 
 	ob_start();

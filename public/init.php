@@ -14,9 +14,21 @@ if (!file_exists($all_cache) || $config->debug || PHP_SAPI === 'cli') {
 	$all_data = `cd $post && find . -type f | sort`;
 	$all_data = explode("\n", $all_data);
 	$all_data = array_reverse($all_data);
-	$all_data_str = implode("\n", $all_data);
 
-	file_put_contents($all_cache, $all_data_str);
+	$public_posts = array();
+	foreach ($all_data as $post_path) {
+		$_post = parse_post($post_path);
+		if (empty($_post)) {
+			continue;
+		}
+
+		if (isset($_post->draft) && $_post->draft == true) {
+			continue;
+		}
+
+		$public_posts[] = $post_path;
+	}
+	file_put_contents($all_cache, implode("\n", $public_posts));
 
 	// truncate and init file meta
 	file_put_contents($all_cache_metadata, '');

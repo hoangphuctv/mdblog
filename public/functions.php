@@ -52,7 +52,7 @@ function find_posts($offset, $limit){
 }
 
 function parse_post($post_path){
-
+	if (empty($post_path)) { return; }
 	$post_path = str_replace("./", '/', $post_path);
 	$post = [
 		'name'     => basename($post_path),
@@ -78,10 +78,17 @@ function parse_post($post_path){
 }
 
 function get_post_metadata($post_path) {
+	$relative_path = $post_path;
 	if (strpos($post_path, POST) === false) {
 		$post_path = POST.$post_path;
+	}else {
+		$relative_path = str_replace($post_path, POST, '');
 	}
 	$content = file_get_contents($post_path);
+	if (empty($content)) {
+		return array();
+	}
+
 	$lines = explode("\n", $content);
 	if ($lines[0] == '---') {
 		$parts = explode("---", $content);
@@ -89,6 +96,8 @@ function get_post_metadata($post_path) {
 		$metadata['content'] = $parts[2];
 		if (isset($metadata['title'])) {
 			$t = $metadata['title'];
+		}else {
+			$metadata['title'] = ltrim($relative_path, '/');
 		}
 	}else {
 		// get first line as title
@@ -186,8 +195,10 @@ function parse_toml($lines) {
 		$lines = explode("\n", $lines);
 		$header = [];
 		foreach($lines as $line) {
+			$line = trim($line);
+			if (empty($line)) {continue;}
 			$line = explode(":", $line);
-			$line[0] = trim(strtolower($line[0]));
+			$line[0] = trim(mb_strtolower($line[0]));
 			$line[1] = trim($line[1]);
 
 			if (strpos($line[1], '[') !== false) {
@@ -199,8 +210,11 @@ function parse_toml($lines) {
 	return $header;
 }
 
+function get_permalink($post) {
+	return $post->path;
+}
 
-function get_permalink($post){
+function get_permalink2($post){
 	global $config;
 	static $df_permalink = "/{YEAR}-{MONTH}-{DAY}-{TITLE}.html";
 	$permalink = $config->permalink;
@@ -209,10 +223,10 @@ function get_permalink($post){
 	}
 	$link = $permalink;
 	foreach ($vars[1] as $key) {
-		$property = strtolower($key);
-		$link = str_replace("{{$key}}", strtolower($post->$property), $link);
+		$property = mb_strtolower($key);
+		$link = str_replace("{{$key}}", mb_strtolower($post->$property), $link);
 	}
-	// character not support function strtolower
+	// character not support function mb_strtolower
 	$link = str_replace(['Đ'], 'đ', $link);
 
 	// $link = str_replace(['/'], '-', $link);
