@@ -1,4 +1,4 @@
-#phpmdb
+# mdblog
 
 Install dependencies
 ```
