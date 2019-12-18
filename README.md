@@ -3,11 +3,11 @@
 Install dependencies
 ```
 $ git clone git@github.com:hoangphuctv/mdblog.git
-$ cd phpmdb
+$ cd mdblog
 $ composer install
 ```
 
-Setup vhost point to `phpmdb/public` dir.
-Put your post in `phpmdb/posts` dir.
+Setup vhost point to `mdblog/public` dir.
+Put your post in `mdblog/posts` dir.
 
 Enjoy blogging!
