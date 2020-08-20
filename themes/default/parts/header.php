@@ -4,7 +4,6 @@
 	<script>
 	  function search_submit(){
 		  var q = document.body.querySelector('#text-q');
-		  console.log(q )
 		  q.value = q.value + " site:" + location.hostname;
 		  return true;
 	  };
