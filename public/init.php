@@ -35,6 +35,8 @@ if (!file_exists($all_cache) || $config->debug || PHP_SAPI === 'cli') {
 
 	foreach($all_data as $line) {
 		$post_meta = parse_post($line);
-		file_put_contents($all_cache_metadata, json_encode($post_meta)."\n", FILE_APPEND);
+		if ($post_meta) {
+			file_put_contents($all_cache_metadata, json_encode($post_meta)."\n", FILE_APPEND);
+		}
 	}
 }

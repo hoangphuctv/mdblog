@@ -4,7 +4,7 @@ include __DIR__.'/bootstrap.php';
 define('BASE_URL', '/');
 
 $uri = str_replace('..', '', explode("?", $_SERVER['REQUEST_URI'])[0]);
-$uri = str_replace('.html', '.md', $uri);
+// $uri = str_replace('.html', '.md', $uri);
 
 $md_origin = $uri;
 $mdfile = POST. '/'. $uri;
@@ -17,7 +17,7 @@ if ($uri == "/" || preg_match("/\/page-(\d+)/", $uri, $match_page)) {
 }else {
 	$post = find_post($uri);
 	if (empty($post)) {
-		show_404();
+		show_404(htmlentities($uri) . ' not found.');
 	}else {
 		include CTRL . '/single.php';
 	}

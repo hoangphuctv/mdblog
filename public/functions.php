@@ -220,7 +220,9 @@ function parse_toml($lines) {
 }
 
 function get_permalink($post) {
-	return $post->path;
+	$link = rtrim($post->path, '.md');
+	$link = rtrim($link, '.MD');
+	return $link . '.html';
 }
 
 function get_permalink2($post){
