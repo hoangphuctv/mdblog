@@ -5,6 +5,7 @@ define('HOST'   , "localhost");
 define('PORT'   , "1919");
 define('APPNAME', "mdb");
 define('VERSION', "0.0.1");
+define('DIR', getcwd());
 
 if (empty($argv)) {
 	mdb_print_usage();
@@ -37,7 +38,7 @@ switch ($CMD) {
 		break;
 	default:
 		println("Generate html...");
-		include __DIR__ . '/public/generate.php';
+		include DIR . '/public/generate.php';
 		break;
 }
 

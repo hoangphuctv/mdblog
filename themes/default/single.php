@@ -8,6 +8,8 @@
 			<div class="markdown-body">
 				<h1 class="page-title"><?php echo $post->title ?></h1>
 				<?php if (isset($post)) { echo $post->content; } ?>
+				<p>---</p>
+				<?php if (isset($post->author)) { echo $post->author; } else { echo $config->author; } ?>
 			</div>
 			<?php include __DIR__ . '/parts/fb-comments.php'; ?>
 		</div>

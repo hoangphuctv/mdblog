@@ -85,6 +85,7 @@ function get_post_metadata($post_path) {
 		$relative_path = str_replace($post_path, POST, '');
 	}
 	$content = file_get_contents($post_path);
+	$content = trim($content);
 	if (empty($content)) {
 		return array();
 	}
@@ -118,7 +119,15 @@ function get_post_metadata($post_path) {
 
 function get_next_posts($current_post, $n=1) {
 	$all = CACHE ."/all";
-	$posts = `awk '$0 == ".$current_post" {i=1;next};i && i++ <= $n' $all`;
+	$base = basename(dirname($current_post));
+	if ($base) {
+		$posts = `grep '$base' '$all' | sort`;
+	}
+	else {
+		$posts = `awk '$0 == ".$current_post" {i=1;next};i && i++ <= $n' '$all'`;
+	}
+
+
 	$posts = trim($posts);
 	if (empty($posts)) {
 		$posts = `tail -n $n $all`;

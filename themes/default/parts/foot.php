@@ -2,7 +2,7 @@
 	<hr>
 	<div class="row">
 		<div class="col-12">
-			<p class="text-center"> &copy; <?= $config->author; ?> 2019</p>
+			<p class="text-center"> &copy; <?= $config->author; ?> 2019 | Powered by <a href="https://github.com/hoangphuctv/mdblog">mdblog</a> & Github</p>
 		</div>
 	</div>
 </div>
