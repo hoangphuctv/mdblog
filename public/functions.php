@@ -206,6 +206,8 @@ function parse_toml($lines) {
 		foreach($lines as $line) {
 			$line = trim($line);
 			if (empty($line)) {continue;}
+			if (strpos($line, ":") === false) {continue;}
+
 			$line = explode(":", $line);
 			$line[0] = trim(mb_strtolower($line[0]));
 			$line[1] = trim($line[1]);

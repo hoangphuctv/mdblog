@@ -4,3 +4,4 @@ composer.lock
 posts/*
 config.json
 static/
+config.json
