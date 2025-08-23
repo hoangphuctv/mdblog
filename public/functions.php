@@ -44,10 +44,16 @@ function find_posts($offset, $limit){
 
 	$all_cache = CACHE."/all";
 
-	$posts = `head -n $head $all_cache | tail -n $limit`;
-	$posts = explode("\n", trim($posts));
-
-	$total = intval(`wc -l $all_cache`);
+	// Read the file safely instead of using shell commands
+	if (!file_exists($all_cache)) {
+		return [[], 0];
+	}
+	
+	$lines = file($all_cache, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+	$total = count($lines);
+	
+	$posts = array_slice($lines, $offset, $limit);
+	
 	return [$posts, $total];
 }
 
@@ -119,21 +125,43 @@ function get_post_metadata($post_path) {
 
 function get_next_posts($current_post, $n=1) {
 	$all = CACHE ."/all";
+	if (!file_exists($all)) {
+		return [];
+	}
+	
+	$lines = file($all, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+	$posts = [];
+	
 	$base = basename(dirname($current_post));
 	if ($base) {
-		$posts = `grep '$base' '$all' | sort`;
-	}
-	else {
-		$posts = `awk '$0 == ".$current_post" {i=1;next};i && i++ <= $n' '$all'`;
+		// Filter lines that contain the base directory
+		foreach ($lines as $line) {
+			if (strpos($line, $base) !== false) {
+				$posts[] = $line;
+			}
+		}
+		sort($posts);
+	} else {
+		// Find posts after the current post
+		$found = false;
+		$count = 0;
+		foreach ($lines as $line) {
+			if ($found && $count < $n) {
+				$posts[] = $line;
+				$count++;
+			}
+			if ($line === $current_post) {
+				$found = true;
+			}
+		}
 	}
 
-
-	$posts = trim($posts);
+	// If no posts found, get the last n posts
 	if (empty($posts)) {
-		$posts = `tail -n $n $all`;
-		$posts = trim($posts);
+		$posts = array_slice($lines, -$n);
 	}
-	return explode("\n", $posts);
+	
+	return $posts;
 }
 
 function short_date($time) {

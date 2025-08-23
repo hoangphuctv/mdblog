@@ -11,9 +11,17 @@ if (!is_dir($cache)) {
 }
 if (!file_exists($all_cache) || $config->debug || PHP_SAPI === 'cli') {
 	// reset or create cache
-	$all_data = `cd $post && find . -type f -name "*.md" -not -path '*/\.*' | sort`;
-	$all_data = explode("\n", $all_data);
-	$all_data = array_reverse($all_data);
+	$all_data = [];
+	if (is_dir($post)) {
+		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($post));
+		foreach ($iterator as $file) {
+			if ($file->isFile() && $file->getExtension() === 'md' && !preg_match('/\/\./', $file->getPathname())) {
+				$all_data[] = './' . substr($file->getPathname(), strlen($post) + 1);
+			}
+		}
+		sort($all_data);
+		$all_data = array_reverse($all_data);
+	}
 
 	$public_posts = array();
 	foreach ($all_data as $post_path) {
