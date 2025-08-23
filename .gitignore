@@ -2,5 +2,6 @@ cached
 vendor
 composer.lock
 posts/*
+!posts/sample-post.md
 config.json
 static/
