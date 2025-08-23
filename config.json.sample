@@ -1,8 +1,8 @@
 {
-	"site_name" : "Lập trình",
-	"author" : "Phuc Tran Hoang",
+	"site_name" : "My Blog",
+	"author" : "PhucTH",
 	"post_per_page" : 10,
-	"post_dir" : "/Users/phuctran/Blogs/hoangphuctv/content/post",
+	"post_dir" : "./posts",
 	"permalink" : "/blog/{YEAR}/{MONTH}/{DAY}/{TITLE}/",
 
 	"ga_id" : "",

@@ -1,6 +1,6 @@
 cached
 vendor
 composer.lock
-posts/*
+posts/*.md
 config.json
 static/
