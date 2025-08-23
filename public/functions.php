@@ -128,7 +128,7 @@ function get_next_posts($current_post, $n=1) {
 	}
 
 
-	$posts = trim($posts);
+	if ($posts) $posts = trim($posts);
 	if (empty($posts)) {
 		$posts = `tail -n $n $all`;
 		$posts = trim($posts);

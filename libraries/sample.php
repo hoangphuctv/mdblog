@@ -2,6 +2,15 @@
 
 class Sample {
 
+    public  $siteName = 'My Blog';
+    public  $author = 'PhucTH';
+    public $postPerPage = 10;
+    public  $postDir = './posts';
+    public  $permalink = '/blog/{YEAR}/{MONTH}/{DAY}/{TITLE}/';
+    public  $gaId = '';
+    public  $fbAppId = '';
+    public $debug = true;
+
 	function __construct($data=[]) {
 		if ($data) {
 			foreach ($data as $key =>$value) {
