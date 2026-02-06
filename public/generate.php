@@ -28,7 +28,7 @@ foreach ($lines as $md_origin) {
 
 // generate index and pages
 $page_number = ceil(count($lines) / $config->post_per_page);
-for ($page = 1; $page < $page_number; $page++) {
+for ($page = 1; $page <= $page_number; $page++) {
 	$_GET['page'] = $page;
 	ob_start();
 	include CTRL . '/home.php';
